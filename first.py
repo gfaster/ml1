@@ -1,8 +1,8 @@
 import tensorflow as tf 
-import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 import random
+import os
 
 config = tf.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -60,7 +60,7 @@ probability_model = tf.keras.Sequential([ # writing it out converting the logits
 # img = Image.fromarray(pixels, "L")
 # img.show()
 
-export_path = "C:\\Users\\gfast\\Desktop\\lil projects\\ml1\\build\\"
+export_path = os.path.dirname(os.path.abspath(__file__))+"\\build\\"
 
 
 # print(model(x_train[:1]))

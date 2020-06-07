@@ -11,7 +11,8 @@ config = tf.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.compat.v1.Session(config=config)
 
-import_path = "C:\\Users\\gfast\\Desktop\\lil projects\\ml1\\build"
+
+import_path = os.path.dirname(os.path.abspath(__file__))+"\\build"
 image_path = ''
 
 if len(sys.argv) == 2:
