@@ -4,6 +4,10 @@ import numpy as np
 from PIL import Image
 import random
 
+config = tf.compat.v1.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.compat.v1.Session(config=config)
+
 
 mnist = tf.keras.datasets.mnist # handwriting database
 
@@ -14,8 +18,10 @@ x_train, x_test = x_train / 255.0, x_test / 255.0 # converting the samples to fl
 
 model = tf.keras.models.Sequential([
 	tf.keras.layers.Flatten(input_shape=(28,28)), # serializing the images
-	tf.keras.layers.Dense(128, activation='relu'), # first layer, not sure about activation
-	tf.keras.layers.Dropout(0.2), # not sure what this does
+	tf.keras.layers.Dense(256, activation='relu'), # first layer, not sure about activation
+	tf.keras.layers.Dropout(0.1), # not sure what this does
+	tf.keras.layers.Dense(64, activation='relu'),
+	tf.keras.layers.Dropout(0.1),
 	tf.keras.layers.Dense(10) # output layer
 	])
 
@@ -31,7 +37,7 @@ model.compile(optimizer='adam',
               loss=loss_fn,
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5)
+model.fit(x_train, y_train, epochs=15)
 
 model.evaluate(x_test,  y_test, verbose=2)
 
@@ -41,17 +47,21 @@ probability_model = tf.keras.Sequential([ # writing it out converting the logits
 ])
 
 
-testvar = random.randint(1, 100)
+# testvar = random.randint(1, 100)
 
-print('I think it is: ' + str(int(tf.math.argmax(probability_model(x_test[testvar:testvar+1])[0]))))
+# print('I think it is: ' + str(int(tf.math.argmax(probability_model(x_test[testvar:testvar+1])[0]))))
 
-# show the tested image
-image_to_display = x_test[testvar]
-image_to_display = np.array(image_to_display * 255, dtype=np.uint8)
-pixels = image_to_display.reshape((28, 28))
-img = Image.fromarray(pixels, "L")
-img.show()
+# # show the tested image
+# image_to_display = x_test[testvar]
+# image_to_display = np.array(image_to_display * 255, dtype=np.uint8)
+# pixels = image_to_display.reshape((28, 28))
+# img = Image.fromarray(pixels, "L")
+# img.show()
 
 export_path = "C:\\Users\\gfast\\Desktop\\lil projects\\ml1\\build\\"
 
-tf.saved_model.save(probability_model, export_path)
+
+# print(model(x_train[:1]))
+probability_model.save(export_path)
+# loaded_model = tf.keras.models.load_model(export_path)
+# print(loaded_model(x_train[:1]))
