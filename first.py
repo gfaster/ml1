@@ -22,6 +22,8 @@ model = tf.keras.models.Sequential([
 	tf.keras.layers.Dropout(0.1), # not sure what this does
 	tf.keras.layers.Dense(64, activation='relu'),
 	tf.keras.layers.Dropout(0.1),
+	tf.keras.layers.Dense(16, activation='relu'),
+	tf.keras.layers.Dropout(0.1),
 	tf.keras.layers.Dense(10) # output layer
 	])
 
@@ -37,7 +39,7 @@ model.compile(optimizer='adam',
               loss=loss_fn,
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=15)
+model.fit(x_train, y_train, epochs=25)
 
 model.evaluate(x_test,  y_test, verbose=2)
 
